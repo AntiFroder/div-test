@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ApplicationStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,6 +14,12 @@ return new class extends Migration
     {
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('guest_id')->comment('Гость');
+            $table->foreignId('user_id')->comment('Ответственный')->constrained();
+            $table->enum('status', ApplicationStatus::getValues())
+                ->default(ApplicationStatus::ACTIVE);
+            $table->text('message');
+            $table->text('comment');
             $table->timestamps();
         });
     }
